@@ -6,20 +6,20 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class MyConnector {
-
     private static Connection connection;
+    private static final String connectionString = "jdbc:mysql://localhost:3306/";
 
-    private static final String connectionString = "jdbc:mysql//localhost:3306/";
-
-    public static void createConnection(String username, String password, String databaseName) throws SQLException {
+    public static void createConnection(String username, String password, String dbName) throws SQLException {
         Properties properties = new Properties();
-        properties.setProperty("username", username);
+        properties.setProperty("user", username);
         properties.setProperty("password", password);
 
-        connection = DriverManager.getConnection(connectionString + databaseName, properties);
+        connection = DriverManager.getConnection(connectionString + dbName, properties);
     }
 
-    public static Connection getConnection() {
+    public static Connection getConnection(){
         return connection;
     }
+
+
 }
