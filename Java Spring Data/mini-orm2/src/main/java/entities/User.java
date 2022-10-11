@@ -19,7 +19,11 @@ public class User {
     private int age;
 
     @Column(name = "registration_date")
-    private LocalDate  registration;
+    private LocalDate registration;
+
+    public User() {
+
+    }
 
     public User(String username, int age, LocalDate registration) {
         this.username = username;
