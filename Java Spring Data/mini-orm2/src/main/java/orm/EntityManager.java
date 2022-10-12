@@ -119,37 +119,80 @@ public class EntityManager<E> implements DbContext<E> {
     }
 
     @Override
-    public Iterable<E> find(Class<E> table) {
-        return null;
+    public Iterable<E> find(Class<E> table) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Statement statement = connection.createStatement();
+
+        String tableName = getTableName(table);
+
+        String query = String.format("SELECT * FROM %s", tableName);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        return getEntities(table, resultSet);
     }
 
     @Override
-    public Iterable<E> find(Class<E> table, String where) {
-        return null;
+    public Iterable<E> find(Class<E> table, String where) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Statement statement = connection.createStatement();
+
+        String tableName = getTableName(table);
+
+        String query = String.format("SELECT * FROM %s%s;",
+                tableName, where != null ? " WHERE " + where : "");
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        return getEntities(table, resultSet);
     }
 
     @Override
-    public E findFirst(Class<E> table) {
-        return null;
+    public E findFirst(Class<E> table) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Statement statement = connection.createStatement();
+
+        String tableName = getTableName(table);
+
+        String query = String.format("SELECT * FROM %s LIMIT 1", tableName);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        return getEntity(table, resultSet);
     }
 
     @Override
     public E findFirst(Class<E> table, String where) throws SQLException, NoSuchMethodException,
             InvocationTargetException, InstantiationException, IllegalAccessException {
         Statement statement = connection.createStatement();
+
         String tableName = getTableName(table);
 
         String query = String.format("SELECT * FROM %s %s LIMIT 1;",
                 tableName, where != null ? " WHERE " + where : "");
 
         ResultSet resultSet = statement.executeQuery(query);
+
+        return getEntity(table, resultSet);
+    }
+
+    private E getEntity(Class<E> table, ResultSet resultSet) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SQLException {
         E entity = table.getDeclaredConstructor().newInstance();
 
         resultSet.next();
 
         fillEntity(table, resultSet, entity);
-
         return entity;
+    }
+
+    private List<E> getEntities(Class<E> table, ResultSet resultSet) throws SQLException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        List<E> entities = new ArrayList<>();
+
+        while (resultSet.next()) {
+            E entity = table.getDeclaredConstructor().newInstance();
+
+            fillEntity(table, resultSet, entity);
+
+            entities.add(entity);
+        }
+        return entities;
     }
 
     private void fillEntity(Class<E> table, ResultSet resultSet, E entity) throws SQLException, IllegalAccessException {

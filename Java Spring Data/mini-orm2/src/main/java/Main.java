@@ -20,11 +20,12 @@ public class Main {
 
         EntityManager<User> entity = new EntityManager<>(connection);
 
-        //User user = new User("Pesho", 40, LocalDate.of(2021, 6, 20));
+        User user = new User("Pesho", 40, LocalDate.of(2021, 6, 20));
 
-        //entity.persist(user);
+        entity.persist(user);
 
         User found = entity.findFirst(User.class, "age > 30");
+
 
     }
 }

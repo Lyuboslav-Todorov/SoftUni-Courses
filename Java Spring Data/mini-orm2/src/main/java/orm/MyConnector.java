@@ -17,7 +17,7 @@ public class MyConnector {
         connection = DriverManager.getConnection(connectionString + dbName, properties);
     }
 
-    public static Connection getConnection(){
+    public static Connection getConnection() {
         return connection;
     }
 

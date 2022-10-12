@@ -18,7 +18,7 @@ public class User {
     @Column(name = "age")
     private int age;
 
-    @Column(name = "registration_date")
+    @Column(name = "registration")
     private LocalDate registration;
 
     public User() {
