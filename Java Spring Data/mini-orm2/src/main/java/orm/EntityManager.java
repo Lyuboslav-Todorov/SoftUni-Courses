@@ -6,10 +6,7 @@ import Annotations.Id;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -171,6 +168,46 @@ public class EntityManager<E> implements DbContext<E> {
         ResultSet resultSet = statement.executeQuery(query);
 
         return getEntity(table, resultSet);
+    }
+
+    public void doCreate(Class<E> entityClass) throws SQLException {
+        String tableName = getTableName(entityClass);
+
+        String fieldsWithTypes = getAllFieldsAndDataTypes(entityClass);
+
+        String query = String.format("CREATE TABLE %s ( id INT PRIMARY KEY AUTO_INCREMENT, %s);",
+                tableName, fieldsWithTypes);
+
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.execute();
+    }
+
+    private String getAllFieldsAndDataTypes(Class<E> entityClass) {
+        StringBuilder builder = new StringBuilder();
+
+        Field[] fields = Arrays.stream(entityClass.getDeclaredFields())
+                .filter(f -> !f.isAnnotationPresent(Id.class))
+                .filter(f -> f.isAnnotationPresent(Column.class))
+                .toArray(Field[]::new);
+
+        Arrays.stream(fields).forEach(f -> {
+            builder.append(getNameAndDataTypeOfField(f));
+        });
+
+        return builder.toString();
+    }
+
+    private String getNameAndDataTypeOfField(Field f) {
+
+        if (f.getType() == int.class || f.getType() == Integer.class) {
+            return f.getName() + " INT";
+        } else if (f.getType() == String.class) {
+            return f.getName() + " VARCHAR(50)";
+        }
+
+
+        return "";
     }
 
     private E getEntity(Class<E> table, ResultSet resultSet) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SQLException {
