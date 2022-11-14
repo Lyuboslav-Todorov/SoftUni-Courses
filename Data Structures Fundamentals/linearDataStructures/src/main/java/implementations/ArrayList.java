@@ -24,14 +24,30 @@ public class ArrayList<E> implements List<E> {
         return true;
     }
 
-    private Object[] grow() {
-      return Arrays.copyOf(this.elements, this.elements.length * 2);
-    }
-
     @Override
     public boolean add(int index, E element) {
-        return false;
+        if (index < 0 || index > this.size){
+            return  false;
+        }
+        insert(index, element);
+        return true;
     }
+
+    private void insert(int index, E element) {
+        if (this.size == elements.length){
+            this.elements = grow();
+        }
+        for (int i = this.size - 1; i > index; i--) {
+            elements[i + 1] = elements[i];
+        }
+        this.elements[index] = element;
+        size++;
+    }
+
+    private Object[] grow() {
+        return Arrays.copyOf(this.elements, this.elements.length * 2);
+    }
+
 
     @Override
     public E get(int index) {
@@ -50,7 +66,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public int size() {
-        return 0;
+        return this.size;
     }
 
     @Override
