@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 public class ArrayList<E> implements List<E> {
 
-    private static int DEFAULT_CAPACITY = 4;
+    private static final int DEFAULT_CAPACITY = 4;
     private Object[] elements;
     private int size;
 
@@ -26,42 +26,60 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean add(int index, E element) {
-        if (index < 0 || index > this.size){
-            return  false;
-        }
+        indexValidation(index);
+
         insert(index, element);
+
         return true;
     }
 
     private void insert(int index, E element) {
-        if (this.size == elements.length){
+        if (this.size == elements.length) {
             this.elements = grow();
         }
-        for (int i = this.size - 1; i > index; i--) {
+
+        for (int i = this.size - 1; i >= index; i--) {
             elements[i + 1] = elements[i];
         }
+
         this.elements[index] = element;
+
         size++;
     }
 
-    private Object[] grow() {
-        return Arrays.copyOf(this.elements, this.elements.length * 2);
-    }
-
-
     @Override
     public E get(int index) {
-        return null;
+        indexValidation(index);
+
+        return (E) this.elements[index];
     }
 
     @Override
     public E set(int index, E element) {
-        return null;
+        indexValidation(index);
+
+        E previousElement = this.get(index);
+
+        this.elements[index] = element;
+
+        return previousElement;
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        indexValidation(index);
+
+        E removedElement = this.get(index);
+
+        for (int i = index; i < this.size - 1; i++) {
+            this.elements[i] = this.elements[i + 1];
+        }
+
+        size--;
+
+        ensureCapacity();
+
+        return removedElement;
     }
 
     @Override
@@ -71,21 +89,59 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public int indexOf(E element) {
-        return 0;
+        for (int i = 0; i < this.size; i++) {
+            if (elements[i].equals(element)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public boolean contains(E element) {
-        return false;
+        return indexOf(element) >= 0;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.size == 0;
     }
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new Iterator<E>() {
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return this.index < size();
+            }
+
+            @Override
+            public E next() {
+                return get(index++);
+            }
+        };
     }
+
+    private Object[] grow() {
+        return Arrays.copyOf(this.elements, this.elements.length * 2);
+    }
+
+    private void indexValidation(int index) {
+        if (index < 0 || index >= this.size) {
+            throw new IndexOutOfBoundsException("Incorrect index (" + index + ") !");
+        }
+    }
+
+    private void ensureCapacity() {
+        if (this.size < this.elements.length / 3) {
+            this.elements = shrink();
+        }
+    }
+
+    private Object[] shrink() {
+        return Arrays.copyOf(this.elements, this.elements.length / 2);
+    }
+
 }
