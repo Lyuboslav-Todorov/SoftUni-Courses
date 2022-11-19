@@ -42,7 +42,7 @@ public class Queue<E> implements AbstractQueue<E> {
     public E poll() {
         ensureIsNotEmpty();
         E removedElement = this.head.element;
-        if (this.size == 1){
+        if (this.size == 1) {
             this.head = null;
         } else {
             Node<E> newNode = this.head.next;
@@ -88,7 +88,7 @@ public class Queue<E> implements AbstractQueue<E> {
     }
 
     private void ensureIsNotEmpty() {
-        if (isEmpty()){
+        if (isEmpty()) {
             throw new IllegalStateException("Queue is empty");
         }
     }
