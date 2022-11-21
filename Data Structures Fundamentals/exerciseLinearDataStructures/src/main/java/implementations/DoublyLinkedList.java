@@ -6,11 +6,14 @@ import java.util.Iterator;
 
 public class DoublyLinkedList<E> implements LinkedList<E> {
     private Node<E> head;
+    private Node<E> end;
     private int size;
+
 
     private static class Node<E> {
         private E element;
         private Node<E> next;
+        private Node<E> previous;
 
         public Node(E value) {
             this.element = value;
@@ -23,7 +26,10 @@ public class DoublyLinkedList<E> implements LinkedList<E> {
     @Override
     public void addFirst(E element) {
         Node<E> newNode = new Node<>(element);
-        if (this.head != null) {
+        if (this.head == null) {
+            this.end = newNode;
+        } else {
+            this.head.previous = newNode;
             newNode.next = this.head;
         }
         this.head = newNode;
@@ -36,12 +42,10 @@ public class DoublyLinkedList<E> implements LinkedList<E> {
         if (this.head == null) {
             this.head = newNode;
         } else {
-            Node<E> current = this.head;
-            while (current.next != null) {
-                current = current.next;
-            }
-            current.next = newNode;
+            this.end.next = newNode;
+            newNode.previous = this.end;
         }
+        this.end = newNode;
         this.size++;
     }
 
@@ -51,9 +55,11 @@ public class DoublyLinkedList<E> implements LinkedList<E> {
         E element = this.head.element;
         if (this.size == 1) {
             this.head = null;
+            this.end = null;
         } else {
             Node<E> newHead = this.head.next;
             this.head.next = null;
+            newHead.previous = null;
             this.head = newHead;
         }
         this.size--;
@@ -73,14 +79,11 @@ public class DoublyLinkedList<E> implements LinkedList<E> {
             return removeFirst();
         }
 
-        Node<E> current = this.head;
-        Node<E> prev = this.head;
-        while (current.next != null) {
-            prev = current;
-            current = current.next;
-        }
-        E element =  current.element;
-        prev.next = null;
+        E element = this.end.element;
+        Node<E> newEnd = this.end.previous;
+        this.end.previous = null;
+        newEnd.next = null;
+        this.end = newEnd;
         this.size--;
 
         return element;
