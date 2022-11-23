@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 public class Queue<E> implements AbstractQueue<E> {
     private Node<E> head;
-    private Node<E> end;
+    private Node<E> tale;
     private int size;
 
     private static class Node<E> {
@@ -27,11 +27,11 @@ public class Queue<E> implements AbstractQueue<E> {
         Node<E> newNode = new Node<>(element);
         if (this.head == null) {
             this.head = newNode;
-            this.end = newNode;
+            this.tale = newNode;
         } else {
-            Node<E> current = this.end;
-            this.end.next = newNode;
-            this.end = newNode;
+            Node<E> current = this.tale;
+            this.tale.next = newNode;
+            this.tale = newNode;
             newNode.previous = current;
         }
         this.size++;

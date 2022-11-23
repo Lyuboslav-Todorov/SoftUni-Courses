@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 public class DoublyLinkedList<E> implements LinkedList<E> {
     private Node<E> head;
-    private Node<E> end;
+    private Node<E> tail;
     private int size;
 
 
@@ -27,7 +27,7 @@ public class DoublyLinkedList<E> implements LinkedList<E> {
     public void addFirst(E element) {
         Node<E> newNode = new Node<>(element);
         if (this.head == null) {
-            this.end = newNode;
+            this.tail = newNode;
         } else {
             this.head.previous = newNode;
             newNode.next = this.head;
@@ -42,10 +42,10 @@ public class DoublyLinkedList<E> implements LinkedList<E> {
         if (this.head == null) {
             this.head = newNode;
         } else {
-            this.end.next = newNode;
-            newNode.previous = this.end;
+            this.tail.next = newNode;
+            newNode.previous = this.tail;
         }
-        this.end = newNode;
+        this.tail = newNode;
         this.size++;
     }
 
@@ -55,7 +55,7 @@ public class DoublyLinkedList<E> implements LinkedList<E> {
         E element = this.head.element;
         if (this.size == 1) {
             this.head = null;
-            this.end = null;
+            this.tail = null;
         } else {
             Node<E> newHead = this.head.next;
             this.head.next = null;
@@ -79,11 +79,11 @@ public class DoublyLinkedList<E> implements LinkedList<E> {
             return removeFirst();
         }
 
-        E element = this.end.element;
-        Node<E> newEnd = this.end.previous;
-        this.end.previous = null;
+        E element = this.tail.element;
+        Node<E> newEnd = this.tail.previous;
+        this.tail.previous = null;
         newEnd.next = null;
-        this.end = newEnd;
+        this.tail = newEnd;
         this.size--;
 
         return element;
@@ -97,11 +97,8 @@ public class DoublyLinkedList<E> implements LinkedList<E> {
 
     @Override
     public E getLast() {
-        Node<E> current = this.head;
-        while (current.next != null) {
-            current = current.next;
-        }
-        return current.element;
+        ensureNotEmpty();
+        return this.tail.element;
     }
 
     @Override
