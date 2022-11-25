@@ -3,18 +3,27 @@ import implementations.ArrayDeque;
 public class Main {
     public static void main(String[] args) {
         ArrayDeque<String> arrayDeque = new ArrayDeque<>();
-        arrayDeque.addFirst("1");
-        arrayDeque.addFirst("2");
-        arrayDeque.addFirst("3");
-        arrayDeque.addFirst("4");
-        arrayDeque.addFirst("5");
-        arrayDeque.addFirst("6");
-        arrayDeque.addFirst("7");
-        arrayDeque.addFirst("8");
-        arrayDeque.addFirst("9");
-        arrayDeque.addFirst("10");
-        arrayDeque.addFirst("11");
-        System.out.println(arrayDeque.get(1));
+        arrayDeque.addLast("1");
+        arrayDeque.addLast("2");
+        arrayDeque.addLast("3");
+
+        arrayDeque.insert(1,"4");
+        arrayDeque.insert(1,"5");
+        arrayDeque.insert(1,"6");
+        arrayDeque.insert(1,"7");
+        arrayDeque.insert(1,"8");
+        arrayDeque.insert(1,"9");
+        arrayDeque.insert(1,"10");
+        arrayDeque.insert(1,"11");
+        arrayDeque.insert(1,"12");
+        arrayDeque.insert(1,"13");
+        arrayDeque.insert(1,"14");
+        arrayDeque.insert(1,"15");
+        arrayDeque.insert(1,"16");
+
+        for (String s : arrayDeque) {
+            System.out.println(s);
+        }
 
     }
 }

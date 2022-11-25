@@ -19,7 +19,8 @@ public class ArrayDequeTest extends TestCase {
         arrayDeque.addFirst("9");
         arrayDeque.addFirst("10");
         arrayDeque.addFirst("11");
-        System.out.println(arrayDeque.get(1));
+
+
     }
 
 }

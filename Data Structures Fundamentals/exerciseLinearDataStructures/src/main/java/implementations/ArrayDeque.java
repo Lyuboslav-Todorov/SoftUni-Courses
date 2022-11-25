@@ -48,7 +48,7 @@ public class ArrayDeque<E> implements Deque<E> {
         if (this.size == 0) {
             this.elements[this.tail] = element;
         } else {
-            if (this.tail == 0) {
+            if (this.tail == this.elements.length - 1) {
                 this.elements = grow();
             }
             this.elements[++this.tail] = element;
@@ -63,17 +63,27 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public void insert(int index, E element) {
-
+        ensureIndex(index);
+        if (this.head == 0 || this.tail == this.elements.length - 1) {
+            this.elements = grow();
+        }
+        int realIndex = index + this.head;
+        if (realIndex - this.head < this.tail - realIndex) {
+            shiftLeftAndInsert(element, realIndex);
+        } else {
+            shiftRightAndInsert(element, realIndex);
+        }
     }
 
     @Override
     public void set(int index, E element) {
-
+        ensureIndex(index);
+        this.elements[this.head + index] = element;
     }
 
     @Override
     public E peek() {
-        if (this.size > 0) {
+        if (!isEmpty()) {
             return getAt(this.head);
         }
         return null;
@@ -81,6 +91,51 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public E poll() {
+        return removeFirst();
+    }
+
+    @Override
+    public E pop() {
+        return removeLast();
+    }
+
+    @Override
+    public E get(int index) {
+        ensureIndex(index);
+        return getAt(this.head + index);
+    }
+
+    @Override
+    public E get(Object object) {
+        for (int i = this.head; i <= this.tail; i++) {
+            if (this.elements[i].equals(object)) {
+                return getAt(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public E remove(int index) {
+        ensureIndex(index);
+        int indexToRemove = this.head + index;
+        E removedElement = getAt(indexToRemove);
+        shiftAfterRemoval(indexToRemove);
+        return removedElement;
+    }
+
+    @Override
+    public E remove(Object object) {
+        for (int i = this.head; i <= this.tail; i++) {
+            if (this.elements[i].equals(object)) {
+                remove(i - this.head);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public E removeFirst() {
         if (!isEmpty()) {
             E element = getAt(this.head);
             this.elements[this.head++] = null;
@@ -91,45 +146,13 @@ public class ArrayDeque<E> implements Deque<E> {
     }
 
     @Override
-    public E pop() {
+    public E removeLast() {
         if (!isEmpty()) {
             E element = getAt(this.tail);
             this.elements[this.tail--] = null;
             size--;
             return element;
         }
-        return null;
-    }
-
-    @Override
-    public E get(int index) {
-        ensureIndex(index);
-
-        return getAt(this.head + index);
-    }
-
-    @Override
-    public E get(Object object) {
-        return null;
-    }
-
-    @Override
-    public E remove(int index) {
-        return null;
-    }
-
-    @Override
-    public E remove(Object object) {
-        return null;
-    }
-
-    @Override
-    public E removeFirst() {
-        return null;
-    }
-
-    @Override
-    public E removeLast() {
         return null;
     }
 
@@ -145,7 +168,7 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public void trimToSize() {
-
+        //TODO
     }
 
     @Override
@@ -155,7 +178,19 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new Iterator<E>() {
+            private int index = head;
+
+            @Override
+            public boolean hasNext() {
+                return index <= tail;
+            }
+
+            @Override
+            public E next() {
+                return getAt(index++);
+            }
+        };
     }
 
     private Object[] grow() {
@@ -178,14 +213,39 @@ public class ArrayDeque<E> implements Deque<E> {
         return grownElements;
     }
 
+    @SuppressWarnings("unchecked")
     private E getAt(int index) {
         return (E) this.elements[index];
     }
 
 
     private void ensureIndex(int index) {
-        if (index < 0 || index > this.size - 1){
-            throw new IndexOutOfBoundsException("There is not such index!");
+        if (index < 0 || index > this.size - 1) {
+            throw new IndexOutOfBoundsException("Index out of bound for index:" + index);
         }
+    }
+
+    private void shiftAfterRemoval(int indexToRemove) {
+        for (int i = indexToRemove; i <= this.tail; i++) {
+            this.elements[i] = this.elements[i + 1];
+        }
+        this.tail--;
+        this.size--;
+    }
+
+    private void shiftRightAndInsert(E element, int realIndex) {
+        for (int i = this.tail; i >= realIndex; i--) {
+            this.elements[i + 1] = this.elements[i];
+        }
+        this.elements[realIndex] = element;
+        this.tail++;
+    }
+
+    private void shiftLeftAndInsert(E element, int realIndex) {
+        for (int i = this.head; i <= realIndex; i++) {
+            this.elements[i - 1] = this.elements[i];
+        }
+        this.elements[realIndex] = element;
+        this.head--;
     }
 }
