@@ -69,10 +69,11 @@ public class ArrayDeque<E> implements Deque<E> {
         }
         int realIndex = index + this.head;
         if (realIndex - this.head < this.tail - realIndex) {
-            shiftLeftAndInsert(element, realIndex);
+            shiftLeftAndInsert(element, realIndex - 1);
         } else {
             shiftRightAndInsert(element, realIndex);
         }
+        size++;
     }
 
     @Override
@@ -107,6 +108,9 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public E get(Object object) {
+        if (isEmpty()){
+            return null;
+        }
         for (int i = this.head; i <= this.tail; i++) {
             if (this.elements[i].equals(object)) {
                 return getAt(i);
@@ -126,9 +130,19 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public E remove(Object object) {
+        if (isEmpty()){
+            return null;
+        }
         for (int i = this.head; i <= this.tail; i++) {
             if (this.elements[i].equals(object)) {
-                remove(i - this.head);
+                E element = getAt(i);
+
+                for (int j = i; j < this.tail; j++) {
+                    this.elements[i] = this.elements[j + 1];
+                }
+                this.removeLast();
+
+                return element;
             }
         }
         return null;
@@ -168,7 +182,12 @@ public class ArrayDeque<E> implements Deque<E> {
 
     @Override
     public void trimToSize() {
-        //TODO
+        Object[] newElements = new Object[this.size];
+        int index = 0;
+        for (int i = this.head; i <= this.tail; i++) {
+            newElements[index++] = this.elements[i];
+        }
+        this.elements = newElements;
     }
 
     @Override
