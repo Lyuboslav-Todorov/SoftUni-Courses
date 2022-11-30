@@ -26,7 +26,7 @@ public class Tree<E> implements AbstractTree<E> {
     @Override
     public List<E> orderBfs() {
         List<E> result = new ArrayList<>();
-        if (this.key == null){
+        if (this.key == null) {
             return result;
         }
         Deque<Tree<E>> queue = new ArrayDeque<>();
@@ -107,7 +107,42 @@ public class Tree<E> implements AbstractTree<E> {
 
     @Override
     public void swap(E firstKey, E secondKey) {
+        Tree<E> firstTree = findTree(firstKey);
+        Tree<E> secondTree = findTree(secondKey);
 
+        if (firstTree == null || secondTree == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Tree<E> firstParent = firstTree.parent;
+        Tree<E> secondParent = secondTree.parent;
+
+        if (firstParent == null) {
+            swapRoot(secondTree);
+            return;
+        }
+
+        if (secondParent == null) {
+            swapRoot(firstTree);
+            return;
+        }
+
+        firstTree.parent = secondParent;
+        secondTree.parent = firstParent;
+
+        int firstIndex = firstParent.children.indexOf(firstTree);
+        int secondIndex = secondParent.children.indexOf(secondTree);
+
+        firstParent.children.set(firstIndex, secondTree);
+        secondParent.children.set(secondIndex, firstTree);
+
+    }
+
+    private void swapRoot(Tree<E> tree) {
+        this.key = tree.key;
+        this.children = tree.children;
+        this.parent = null;
+        tree.parent = null;
     }
 }
 
