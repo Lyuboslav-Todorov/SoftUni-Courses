@@ -26,9 +26,6 @@ public class TheMatrix {
 
         this.matrix[row][col] = this.fillChar;
 
-        System.out.println(toOutputString());
-        System.out.println();
-
         fillMatrix(row + 1, col);
         fillMatrix(row, col +1);
         fillMatrix(row - 1, col);
