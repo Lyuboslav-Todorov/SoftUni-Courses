@@ -21,22 +21,22 @@ public class Tree<E> implements AbstractTree<E> {
 
     @Override
     public void setParent(Tree<E> parent) {
-
+        this.parent = parent;
     }
 
     @Override
     public void addChild(Tree<E> child) {
-
+        this.children.add(child);
     }
 
     @Override
     public Tree<E> getParent() {
-        return null;
+        return this.parent;
     }
 
     @Override
     public E getKey() {
-        return null;
+        return this.key;
     }
 
     @Override
