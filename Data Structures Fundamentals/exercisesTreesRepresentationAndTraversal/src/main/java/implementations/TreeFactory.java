@@ -19,7 +19,6 @@ public class TreeFactory {
             addEdge(nodeValues[0], nodeValues[1]);
         }
 
-
         return getRoot();
     }
 
