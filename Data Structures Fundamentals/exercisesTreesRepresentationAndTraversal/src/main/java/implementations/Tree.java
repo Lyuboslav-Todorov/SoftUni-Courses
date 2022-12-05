@@ -4,7 +4,6 @@ import interfaces.AbstractTree;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Tree<E> implements AbstractTree<E> {
     private E key;
@@ -167,8 +166,29 @@ public class Tree<E> implements AbstractTree<E> {
 
     @Override
     public List<List<E>> pathsWithGivenSum(int sum) {
-        return null;
+        List<List<E>> paths = new ArrayList<>();
+        List<Tree<E>> allTrees = new ArrayList<>();
+        getAllNodesWithDFS(this, allTrees);
+
+        for (Tree<E> tree : allTrees) {
+            List<E> currentList = new ArrayList<>();
+            int currentSum = 0;
+            if (isLeaf(tree)) {
+                Tree<E> currentTree = tree;
+                while (currentTree != null){
+                    currentList.add(0, currentTree.getKey());
+                    currentSum += Integer.parseInt(String.valueOf(currentTree.getKey()));
+                    currentTree = currentTree.parent;
+                    if (currentSum == sum){
+                        paths.add(currentList);
+                    }
+                }
+            }
+        }
+
+        return paths;
     }
+
 
     @Override
     public List<Tree<E>> subTreesWithGivenSum(int sum) {
