@@ -121,7 +121,7 @@ public class Tree<E> implements AbstractTree<E> {
         for (Tree<E> tree : trees) {
             if (isLeaf(tree)) {
                 int currentPath = getStepsFromLeafToRoot(tree);
-                if (currentPath > maxPath){
+                if (currentPath > maxPath) {
                     maxPath = currentPath;
                     deepest = tree;
                 }
@@ -150,7 +150,19 @@ public class Tree<E> implements AbstractTree<E> {
 
     @Override
     public List<E> getLongestPath() {
-        return null;
+        List<E> longestPath = new ArrayList<>();
+        Tree<E> deepestNode = this.getDeepestLeftmostNode();
+        longestPath.add(deepestNode.getKey());
+        Tree<E> currentParent = deepestNode.parent;
+
+        while (currentParent != null) {
+            longestPath.add(currentParent.getKey());
+            currentParent = currentParent.parent;
+        }
+
+        Collections.reverse(longestPath);
+
+        return longestPath;
     }
 
     @Override
