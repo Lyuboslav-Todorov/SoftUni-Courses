@@ -175,11 +175,11 @@ public class Tree<E> implements AbstractTree<E> {
             int currentSum = 0;
             if (isLeaf(tree)) {
                 Tree<E> currentTree = tree;
-                while (currentTree != null){
+                while (currentTree != null) {
                     currentList.add(0, currentTree.getKey());
                     currentSum += Integer.parseInt(String.valueOf(currentTree.getKey()));
                     currentTree = currentTree.parent;
-                    if (currentSum == sum){
+                    if (currentSum == sum) {
                         paths.add(currentList);
                     }
                 }
@@ -192,7 +192,43 @@ public class Tree<E> implements AbstractTree<E> {
 
     @Override
     public List<Tree<E>> subTreesWithGivenSum(int sum) {
-        return null;
+        List<Tree<E>> allTreesWithGivenSum;
+
+        allTreesWithGivenSum = getSubTreesWithGivenNumber(this, sum);
+
+
+        return allTreesWithGivenSum;
+    }
+
+    private List<Tree<E>> getSubTreesWithGivenNumber(Tree<E> tree, int sum) {
+        List<Tree<E>> allTrees = new ArrayList<>();
+        List<Tree<E>> treesWithGivenSum = new ArrayList<>();
+
+        getAllNodesWithDFS(tree, allTrees);
+
+        for (Tree<E> currentTree : allTrees) {
+            int treeSum = getTreeSum(currentTree);
+            if (treeSum == sum) {
+                treesWithGivenSum.add(currentTree);
+            }
+        }
+
+        return treesWithGivenSum;
+    }
+
+    private int getTreeSum(Tree<E> currentTree) {
+        int sum = 0;
+        Deque<Tree<E>> queue = new ArrayDeque<>();
+        queue.push(currentTree);
+        while (!queue.isEmpty()) {
+            Tree<E> tree = queue.poll();
+            for (Tree<E> child : tree.children) {
+                queue.offer(child);
+            }
+            sum += Integer.parseInt(String.valueOf(tree.getKey()));
+        }
+
+        return sum;
     }
 }
 
