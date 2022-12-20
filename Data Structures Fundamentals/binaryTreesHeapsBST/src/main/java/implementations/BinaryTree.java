@@ -70,21 +70,64 @@ public class BinaryTree<E> implements AbstractBinaryTree<E> {
 
     @Override
     public List<AbstractBinaryTree<E>> preOrder() {
-        return null;
+        List<AbstractBinaryTree<E>> result = new ArrayList<>();
+
+        result.add(this);
+
+        if (this.getLeft() != null) {
+            result.addAll(this.getLeft().preOrder());
+        }
+
+        if (this.getRight() != null) {
+            result.addAll(this.getRight().preOrder());
+        }
+        return result;
     }
 
     @Override
     public List<AbstractBinaryTree<E>> inOrder() {
-        return null;
+        List<AbstractBinaryTree<E>> result = new ArrayList<>();
+
+        if (this.getLeft() != null) {
+            result.addAll(getLeft().inOrder());
+        }
+
+        result.add(this);
+
+        if (this.getRight() != null) {
+            result.addAll(getRight().inOrder());
+        }
+
+        return result;
     }
 
     @Override
     public List<AbstractBinaryTree<E>> postOrder() {
-        return null;
+        List<AbstractBinaryTree<E>> result = new ArrayList<>();
+
+        if (this.getLeft() != null) {
+            result.addAll(this.getLeft().postOrder());
+        }
+
+        if (this.getRight() != null) {
+            result.addAll(this.getRight().postOrder());
+        }
+
+        result.add(this);
+
+        return result;
     }
 
     @Override
     public void forEachInOrder(Consumer<E> consumer) {
+        if (this.getLeft() != null) {
+            this.getLeft().forEachInOrder(consumer);
+        }
 
+        consumer.accept(this.getKey());
+
+        if (this.getRight() != null) {
+            this.getRight().forEachInOrder(consumer);
+        }
     }
 }
