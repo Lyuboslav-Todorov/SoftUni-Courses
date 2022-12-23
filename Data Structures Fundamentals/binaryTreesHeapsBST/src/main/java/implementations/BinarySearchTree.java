@@ -3,9 +3,29 @@ package implementations;
 import interfaces.AbstractBinarySearchTree;
 
 public class BinarySearchTree<E extends Comparable<E>> implements AbstractBinarySearchTree<E> {
+    private Node<E> root;
+    private Node<E> leftChild;
+    private Node<E> rightChild;
 
     @Override
     public void insert(E element) {
+        Node<E> newNode = new Node<>(element);
+        if (getRoot() == null){
+            this.root = newNode;
+        } else {
+            Node<E> current = this.root;
+            Node<E> parent;
+            while (current != null){
+                parent = current;
+                if (current.value.compareTo(element) > 0) {
+                    current = parent.leftChild;
+                } else if (current.value.compareTo(element) < 0) {
+                    current = parent.rightChild;
+                } else {
+                    return;
+                }
+            }
+        }
 
     }
 
@@ -21,21 +41,21 @@ public class BinarySearchTree<E extends Comparable<E>> implements AbstractBinary
 
     @Override
     public Node<E> getRoot() {
-        return null;
+        return this.root;
     }
 
     @Override
     public Node<E> getLeft() {
-        return null;
+        return this.leftChild;
     }
 
     @Override
     public Node<E> getRight() {
-        return null;
+        return this.rightChild;
     }
 
     @Override
     public E getValue() {
-        return null;
+        return this.root.value;
     }
 }
