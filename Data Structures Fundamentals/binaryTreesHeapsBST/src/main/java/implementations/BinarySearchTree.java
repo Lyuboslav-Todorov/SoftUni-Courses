@@ -4,8 +4,22 @@ import interfaces.AbstractBinarySearchTree;
 
 public class BinarySearchTree<E extends Comparable<E>> implements AbstractBinarySearchTree<E> {
     private Node<E> root;
-    private Node<E> leftChild;
-    private Node<E> rightChild;
+
+    public BinarySearchTree() {
+    }
+
+    private BinarySearchTree(Node<E> node) {
+        this.copy(node);
+    }
+
+    private void copy(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        this.insert(node.value);
+        this.copy(node.leftChild);
+        this.copy(node.rightChild);
+    }
 
     @Override
     public void insert(E element) {
@@ -55,12 +69,14 @@ public class BinarySearchTree<E extends Comparable<E>> implements AbstractBinary
         AbstractBinarySearchTree<E> result = new BinarySearchTree<>();
         Node<E> current = this.root;
 
-        while (current != null) {
+        while (current.value != null) {
             if (current.value.compareTo(element) > 0) {
                 current = current.leftChild;
             } else if (current.value.compareTo(element) < 0) {
                 current = current.rightChild;
-            } 
+            } else {
+                return new BinarySearchTree<>(current);
+            }
         }
 
         return result;
@@ -73,12 +89,12 @@ public class BinarySearchTree<E extends Comparable<E>> implements AbstractBinary
 
     @Override
     public Node<E> getLeft() {
-        return this.leftChild;
+        return this.root.leftChild;
     }
 
     @Override
     public Node<E> getRight() {
-        return this.rightChild;
+        return this.root.rightChild;
     }
 
     @Override
