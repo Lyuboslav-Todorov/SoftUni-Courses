@@ -1,4 +1,4 @@
-package com.example.mobilelele.model.entities;
+package com.example.model.entities;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -19,8 +19,7 @@ public abstract class BaseEntity {
         return id;
     }
 
-    public BaseEntity setId(String id) {
+    public void setId(String id) {
         this.id = id;
-        return this;
     }
 }
