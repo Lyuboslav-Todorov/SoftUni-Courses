@@ -1,6 +1,6 @@
-package mobiLeLe.models.entities;
+package mobiLeLe.domain.entities;
 
-import mobiLeLe.models.enums.Role;
+import mobiLeLe.domain.enums.Role;
 import jakarta.persistence.*;
 
 @Entity

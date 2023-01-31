@@ -1,10 +1,12 @@
 package mobiLeLe.web;
 
-import mobiLeLe.models.dtos.RoleViewDto;
+import mobiLeLe.domain.dtos.banding.UserRegisterFormDto;
+import mobiLeLe.domain.dtos.view.RoleViewDto;
 import mobiLeLe.services.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,13 +31,13 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/register")
-    public ModelAndView postRegister() {
-        return super.redirect("auth-login");
+    public ModelAndView postRegister(@ModelAttribute UserRegisterFormDto userRegister) {
+        return super.redirect("/auth-login");
     }
 
     @GetMapping("/login")
     public ModelAndView getLogin() {
-        return super.view("/auth-logic");
+        return super.view("/auth-login");
     }
 
 

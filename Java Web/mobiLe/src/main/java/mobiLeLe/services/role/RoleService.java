@@ -1,6 +1,6 @@
 package mobiLeLe.services.role;
 
-import mobiLeLe.models.dtos.RoleViewDto;
+import mobiLeLe.domain.dtos.view.RoleViewDto;
 
 import java.util.List;
 

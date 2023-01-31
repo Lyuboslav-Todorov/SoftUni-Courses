@@ -1,8 +1,8 @@
 package mobiLeLe.services.role;
 
-import mobiLeLe.models.dtos.RoleViewDto;
-import mobiLeLe.models.entities.UserRole;
-import mobiLeLe.models.enums.Role;
+import mobiLeLe.domain.dtos.view.RoleViewDto;
+import mobiLeLe.domain.entities.UserRole;
+import mobiLeLe.domain.enums.Role;
 import mobiLeLe.repositories.RoleRepository;
 import mobiLeLe.services.init.DataBaseInitService;
 import org.modelmapper.ModelMapper;

@@ -1,6 +1,6 @@
 package mobiLeLe.repositories;
 
-import mobiLeLe.models.entities.Model;
+import mobiLeLe.domain.entities.Model;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

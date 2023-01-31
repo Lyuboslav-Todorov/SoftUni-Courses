@@ -1,6 +1,6 @@
-package mobiLeLe.models.entities;
+package mobiLeLe.domain.entities;
 
-import mobiLeLe.models.enums.ModelCategory;
+import mobiLeLe.domain.enums.ModelCategory;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

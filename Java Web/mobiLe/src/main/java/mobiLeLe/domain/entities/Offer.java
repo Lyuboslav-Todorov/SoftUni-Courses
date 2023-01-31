@@ -1,7 +1,7 @@
-package mobiLeLe.models.entities;
+package mobiLeLe.domain.entities;
 
-import mobiLeLe.models.enums.EngineType;
-import mobiLeLe.models.enums.TransmissionType;
+import mobiLeLe.domain.enums.EngineType;
+import mobiLeLe.domain.enums.TransmissionType;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

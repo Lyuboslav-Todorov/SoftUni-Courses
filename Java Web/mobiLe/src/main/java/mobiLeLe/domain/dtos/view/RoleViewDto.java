@@ -1,6 +1,6 @@
-package mobiLeLe.models.dtos;
+package mobiLeLe.domain.dtos.view;
 
-import mobiLeLe.models.enums.Role;
+import mobiLeLe.domain.enums.Role;
 
 public class RoleViewDto {
     private Role role;

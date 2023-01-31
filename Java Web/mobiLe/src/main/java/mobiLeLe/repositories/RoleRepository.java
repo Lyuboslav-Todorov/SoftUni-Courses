@@ -1,6 +1,6 @@
 package mobiLeLe.repositories;
 
-import mobiLeLe.models.entities.UserRole;
+import mobiLeLe.domain.entities.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

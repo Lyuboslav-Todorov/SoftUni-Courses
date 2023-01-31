@@ -14,7 +14,7 @@ public abstract class BaseController {
     }
 
     public ModelAndView redirect(String url) {
-        return this.view("redirect" + url);
+        return this.view(url);
     }
 
 

@@ -1,4 +1,4 @@
-package mobiLeLe.models.entities;
+package mobiLeLe.domain.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

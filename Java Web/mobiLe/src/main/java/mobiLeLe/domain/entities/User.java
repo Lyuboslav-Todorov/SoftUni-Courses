@@ -1,7 +1,7 @@
-package mobiLeLe.models.entities;
+package mobiLeLe.domain.entities;
 
 import jakarta.persistence.*;
-import mobiLeLe.models.enums.Role;
+import mobiLeLe.domain.enums.Role;
 
 import java.time.LocalDateTime;
 

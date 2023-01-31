@@ -1,4 +1,4 @@
-package mobiLeLe.models.enums;
+package mobiLeLe.domain.enums;
 
 public enum Role {
     USER,
